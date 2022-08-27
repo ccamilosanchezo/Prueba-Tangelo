@@ -3,6 +3,8 @@ import time
 import pandas as pd
 
 from encrypt import sha1
+from managedatabase import managedatabase
+
 
 def getLanguages(element):
     lang = ""
@@ -13,15 +15,13 @@ def getLanguages(element):
             lang = lang + value
     return lang
 
+
 def times(dataframe):
-    max = dataframe['Time'].max()
-    min = dataframe['Time'].min()
-    mean = dataframe['Time'].mean()
-    total = dataframe['Time'].sum()
-    print("El tiempo total fue de: %s ms" % total)
-    print("El tiempo promedio fue de: %s ms" % mean)
-    print("El tiempo mínimo fue de %s ms" % min)
-    print("El tiempo máximo fue de: %s ms" % max)
+    print("El tiempo total fue de: %s ms" % dataframe['Time'].sum())
+    print("El tiempo promedio fue de: %s ms" % dataframe['Time'].mean())
+    print("El tiempo mínimo fue de %s ms" % dataframe['Time'].min())
+    print("El tiempo máximo fue de: %s ms" % dataframe['Time'].max())
+
 
 def getinfo():
     url = "https://restcountries.com/v3.1/all"
@@ -39,6 +39,7 @@ def getinfo():
         }
         table=pd.concat([table, pd.DataFrame(data=dict)], ignore_index = True, axis = 0)
     times(table)
+    managedatabase(table)
 
 
 if __name__ == '__main__':
