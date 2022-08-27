@@ -1,4 +1,5 @@
 import requests
+import time
 import pandas as pd
 
 from encrypt import sha1
@@ -12,20 +13,32 @@ def getLanguages(element):
             lang = lang + value
     return lang
 
+def times(dataframe):
+    max = dataframe['Time'].max()
+    min = dataframe['Time'].min()
+    mean = dataframe['Time'].mean()
+    total = dataframe['Time'].sum()
+    print("El tiempo total fue de: %s ms" % total)
+    print("El tiempo promedio fue de: %s ms" % mean)
+    print("El tiempo mínimo fue de %s ms" % min)
+    print("El tiempo máximo fue de: %s ms" % max)
+
 def getinfo():
     url = "https://restcountries.com/v3.1/all"
     data = requests.get(url)
     data = data.json()
     table = pd.DataFrame(columns=['Region', 'City Name', 'Language', 'Time'])
     for element in data:
+        timeini = time.time()
         language = getLanguages(element)
         dict = {
             'Region': [element['region']],
             'City Name': [element['translations']['spa']['common']],
-            'Language': [sha1(language)]
+            'Language': [sha1(language)],
+            'Time': (time.time()-timeini)*1000
         }
         table=pd.concat([table, pd.DataFrame(data=dict)], ignore_index = True, axis = 0)
-    print(table)
+    times(table)
 
 
 if __name__ == '__main__':
