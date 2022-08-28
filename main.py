@@ -3,7 +3,7 @@ import time
 import pandas as pd
 
 from encrypt import sha1
-from managedatabase import managedatabase
+from managedatabase import managedatabase, databasetojson
 
 
 def getLanguages(element):
@@ -44,3 +44,4 @@ def getinfo():
 
 if __name__ == '__main__':
     getinfo()
+    databasetojson()
